@@ -7,9 +7,26 @@ public class CameraMove : MonoBehaviour
 {
     public Transform target;
     private Vector3 offset=new Vector3(0,7,-4);
+    private Vector3 targetPos;
+    private Vector3 startPos;
+    private float time;
+    private void Start()
+    {
+        startPos = transform.position;
+    }
+
     private void LateUpdate()
     {
-        transform.position = target.position + target.up*7+target.forward*-4; 
+        if (targetPos!=target.position + target.up*7+target.forward*-4)
+        {
+            targetPos = target.position + target.up * 7 + target.forward * -4;
+            startPos = transform.position;
+            time = 0;
+        }
+
+        time += Time.deltaTime;
+        // transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime); 
+        transform.position = Vector3.Lerp(startPos, targetPos, time);
         transform.LookAt(target);
     }
 }
