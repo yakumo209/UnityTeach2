@@ -10,9 +10,13 @@ public class CameraMove : MonoBehaviour
     private Vector3 targetPos;
     private Vector3 startPos;
     private float time;
+    private Quaternion targetQ;
+    private Quaternion startQ;
+    private float roundTime;
     private void Start()
     {
         startPos = transform.position;
+        startQ = transform.rotation;
     }
 
     private void LateUpdate()
@@ -27,6 +31,16 @@ public class CameraMove : MonoBehaviour
         time += Time.deltaTime;
         // transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime); 
         transform.position = Vector3.Lerp(startPos, targetPos, time);
-        transform.LookAt(target);
+        // transform.LookAt(target);
+        targetQ = Quaternion.LookRotation(target.position - transform.position);
+        // transform.rotation = Quaternion.Slerp(transform.rotation, targetQ, Time.deltaTime);
+        roundTime += Time.deltaTime;
+        if (targetQ!=Quaternion.LookRotation(target.position - transform.position))
+        {
+            roundTime = 0;
+            targetQ = Quaternion.LookRotation(target.position - transform.position);
+            startQ = transform.rotation;
+        }
+        transform.rotation = Quaternion.Slerp(startQ, targetQ, roundTime);
     }
 }
