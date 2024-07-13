@@ -18,7 +18,7 @@ public class AirPlane : MonoBehaviour
 {
     public E_FireType type;
 
-    public GameObject bullet;
+    private GameObject bullet;
 
     public float timeBetween;
 
@@ -28,7 +28,7 @@ public class AirPlane : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        bullet = Resources.Load<GameObject>("ArtRes/Sphere");
     }
 
     // Update is called once per frame
